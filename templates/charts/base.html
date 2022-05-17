@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+
+    <!-- Developed by: CryptoMorpheus_ (Ben H. G.) for Cake Labs LLC -->
+    <!-- Email: support@cakewallet.com -->
+    <!-- All images and sources on this website are either free license or are owned/developed by the author -->
+    <!-- In any doubt, problem or question about the programming of the website, please contact the author -->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Monero.com - Charts</title>
+
+    <!-- Favicons -->
+    <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'assets/css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <style>
+        .sidebar-brand {
+            background-color: #dd541d;
+        }
+
+        .collapse-inner {
+            background-color: #ffb6a0;
+        }
+
+        .navbar-nav {
+            background-color: rgb(29, 26, 25);
+        }
+
+        .card {
+            background-color: rgb(37, 34, 33);
+        }
+
+        .card-header {
+            background-color: rgb(37, 34, 33);
+        }
+
+        .border-left-new {
+            border-left-color: rgb(221, 29, 29);
+            border-left-width: 5px;
+        }
+    </style>
+    <!-- Load plotly-->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        #graph1.fullscreen {
+            z-index: 9999;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            padding: 0px;
+            bottom: 0px;
+            float: left;
+            min-height: 100%;
+        }
+
+        #graph1 {
+            height: 650px;
+        }
+
+        #link_graph {
+            color: #FF0000;
+        }
+
+        #link_graph:hover {
+            color: #00FF00;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'index' %}">
+                <div class="sidebar-brand-icon">
+                    <i class="fab fa-monero"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Monero.com</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Metrics
+            </div>
+            <!-- Nav Item - Prices Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePrices"
+                    aria-expanded="true" aria-controls="collapsePrices">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Prices</span>
+                </a>
+                <div id="collapsePrices" class="collapse" aria-labelledby="headingPrices"
+                    data-parent="#accordionSidebar">
+                    <div class="py-2 collapse-inner rounded">
+                        <h6 class="collapse-header text-dark">Charts:</h6>
+                        <a class="collapse-item" href="{% url 'price' 'log' %}">Price in Dollars (Log.)</a>
+                        <a class="collapse-item" href="{% url 'price' 'linear' %}">Price in Dollars (Lin.)</a>
+                        <a class="collapse-item" href="{% url 'price_btc' 'linear' %}">Price in Bitcoin (Lin.)</a>
+                        <a class="collapse-item" href="{% url 'price_btc' 'log' %}">Price in Bitcoin (Log.)</a>
+                        <a class="collapse-item" href="{% url 'cycle' %}">Market Cycle</a>
+                        <a class="collapse-item" href="{% url 'inflationfractal' %}">Inflation-Adjusted Fractal</a>
+                        <a class="collapse-item" href="{% url 'golden' %}">Golden Ratio Multiplier</a>
+                        <a class="collapse-item" href="{% url 'competitors' %}">Competitor Performance</a>
+                        <!--
+                        <a class="collapse-item" href="">Comparison to Bitcoin</a>
+                        <a class="collapse-item" href="">Fractal Multiple</a>
+                        <a class="collapse-item" href="">Power Law</a>
+                        <a class="collapse-item" href="">Thermocap Multiple</a>
+                        <a class="collapse-item" href="">Sharpe Ratio</a>-->
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Transactions Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransactions"
+                    aria-expanded="true" aria-controls="collapseTransactions">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transactions</span>
+                </a>
+                <div id="collapseTransactions" class="collapse" aria-labelledby="headingTransactions"
+                    data-parent="#accordionSidebar">
+                    <div class="py-2 collapse-inner rounded">
+                        <h6 class="collapse-header text-dark">Charts:</h6>
+                        <a class="collapse-item" href="{% url 'shielded' %}">Shielded Transactions</a>
+                        <a class="collapse-item" href="{% url 'total_transactions' %}">Total Transactions</a>
+                        <!--
+                        <a class="collapse-item" href="">Transaction Count (Lin.)</a>
+                        <a class="collapse-item" href="">Transaction Count (Log.)</a>
+                        <a class="collapse-item" href="">Transaction Cost ($)</a>
+                        <a class="collapse-item" href="">Transaction Cost (Ntv.)</a>
+                        <a class="collapse-item" href="">Transaction Percentage</a>
+                        <a class="collapse-item" href="">Metcalfe's Law (Sats)</a>
+                        <a class="collapse-item" href="">Metcalfe's Law ($)</a>-->
+                    </div>
+                </div>
+            </li>
+            <!--
+            <!-;- Nav Item - Issuance Collapse Menu -;->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseIssuance"
+                    aria-expanded="true" aria-controls="collapseIssuance">
+                    <i class="fas fa-chart-area"></i>
+                    <span>Issuance</span>
+                </a>
+                <div id="collapseIssuance" class="collapse" aria-labelledby="headingIssuance"
+                    data-parent="#accordionSidebar">
+                    <div class="collapse-inner rounded">
+                        <h6 class="collapse-header text-dark">Charts:</h6>
+                        <a class="collapse-item" href="">Coins in Circulation</a>
+                        <a class="collapse-item" href="">Supply Difference</a>
+                        <a class="collapse-item" href="">Annual Inflation</a>
+                        <a class="collapse-item" href="">Competitors' Inflation</a>
+                        <a class="collapse-item" href="">Daily Emission ($)</a>
+                    </div>
+                </div>
+            </li>-->
+
+            <!-- Nav Item - Stock-to-flow Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSF"
+                    aria-expanded="true" aria-controls="collapseSF">
+                    <i class="fas fa-coins"></i>
+                    <span>Stock-to-flow</span>
+                </a>
+                <div id="collapseSF" class="collapse" aria-labelledby="headingSF" data-parent="#accordionSidebar">
+                    <div class="py-2 collapse-inner rounded">
+                        <h6 class="collapse-header text-dark">Charts:</h6>
+                        <a class="collapse-item" href="{% url 'sf' 'log' %}">Stock-to-flow (Log.)</a>
+                        <a class="collapse-item" href="{% url 'sf' 'linear' %}">Stock-to-flow (Lin.)</a>
+                        <a class="collapse-item" href="{% url 'sfmultiple' %}">Stock-to-flow Multiple</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- 
+            <!-;- Nav Item - Stock-to-flow Collapse Menu -;->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMining"
+                    aria-expanded="true" aria-controls="collapseMining">
+                    <i class="fas fa-calculator"></i>
+                    <span>Mining</span>
+                </a>
+                <div id="collapseMining" class="collapse" aria-labelledby="headingMining"
+                    data-parent="#accordionSidebar">
+                    <div class="py-2 collapse-inner rounded">
+                        <h6 class="collapse-header text-dark">Charts:</h6>
+                        <a class="collapse-item" href="">Hashrate</a>
+                        <a class="collapse-item" href="">Price Per Hashrate</a>
+                        <a class="collapse-item" href="">Hashrate Vs Price</a>
+                        <a class="collapse-item" href="">Miner Revenue ($)</a>
+                        <a class="collapse-item" href="">Miner Revenue (Ntv.)</a>
+                        <a class="collapse-item" href="">Revenue / Marketcap (%)</a>
+                        <a class="collapse-item" href="">Miner Commitment ($)</a>
+                        <a class="collapse-item" href="">Miner Commitment (Ntv.)</a>
+                    </div>
+                </div>
+            </li>
+            <!-;- Divider -;->
+            <hr class="sidebar-divider">
+
+            <!-;- Heading -;->
+            <div class="sidebar-heading">
+                Social
+            </div>
+            <!-;- Nav Item - Social Collapse Menu -;->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSocial"
+                    aria-expanded="true" aria-controls="collapseSocial">
+                    <i class="fab fa-reddit-alien"></i>
+                    <span>Reddit</span>
+                </a>
+                <div id="collapseSocial" class="collapse" aria-labelledby="headingSocial"
+                    data-parent="#accordionSidebar">
+                    <div class="py-2 collapse-inner rounded">
+                        <h6 class="collapse-header text-dark">Charts:</h6>
+                        <a class="collapse-item" href="">Total Subscribers</a>
+                        <a class="collapse-item" href="">Monthly Increase</a>
+                        <a class="collapse-item" href="">Dollars / Subscriber</a>
+                        <a class="collapse-item" href="">Subscribers Percentage</a>
+                    </div>
+                </div>
+            </li>-->
+            <!-- Nav Item - Trends Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTrends"
+                    aria-expanded="true" aria-controls="collapseTrends">
+                    <i class="fab fa-google"></i>
+                    <span>Google Trends</span>
+                </a>
+                <div id="collapseTrends" class="collapse" aria-labelledby="headingTrends"
+                    data-parent="#accordionSidebar">
+                    <div class="py-2 collapse-inner rounded">
+                        <h6 class="collapse-header text-dark">Charts:</h6>
+                        <a class="collapse-item"
+                            href="https://trends.google.com/trends/explore?date=today%205-y&q=monero"
+                            target="_blank">Google Trends</a>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        {% block content %}
+        {% endblock %}
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="{% static 'assets/vendor/jquery_2/jquery.min.js' %}"></script>
+        <script src="{% static 'assets/vendor/bootstrap_2/js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+
+</html>
