@@ -875,7 +875,7 @@ def shielded(request):
     dominance = 0
     monthly = 0 
     
-    values_mat = wks.get_values(start=(3,1), end=(68,5), returnas='matrix')
+    values_mat = wks.get_values(start=(3,1), end=(999,5), returnas='matrix')
 
     for k in range(0,len(values_mat)):
         if values_mat[k][0] and values_mat[k][3]:
