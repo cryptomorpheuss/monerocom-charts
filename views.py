@@ -891,16 +891,22 @@ def shielded(request):
         else:
             break
     
+    previous_date = 0
     coins = Coin.objects.order_by('date').filter(name='xmr')
     for date in dates:
         value2 = 0
         for coin in coins:
-            if datetime.datetime.strftime(coin.date, '%Y-%m') == date:
-                value2 += coin.transactions
+            aux = str(coin.date)
+            month = aux.split("-")[0] + '-' + aux.split("-")[1]
+            if month == date:
+                if previous_date != coin.date:
+                    value2 += coin.transactions
+                    previous_date = coin.date
         
-        dominance = 100*int(value2)/(int(value2)+int(value)+int(value3))
-        monthly = int(value2)
         values2.append(int(value2))
+    
+    dominance = 100*int(value2)/(int(value2)+int(value)+int(value3))
+    monthly = int(value2)
     
     monthly = format(int(monthly),',')
     dominance = locale.format('%.2f', dominance, grouping=True)
